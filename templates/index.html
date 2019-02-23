@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Twitter Account Analysis</title>
+    <link href='https://fonts.googleapis.com/css?family=Acme' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Actor' rel='stylesheet'>
+    <style type="text/css">
+    	body{
+    		background-image: url('/static/background.jpg');
+    	}
+    	input[type=text] {
+          width: 30%;
+          box-sizing: border-box;
+          border: 2px solid #ccc;
+          border-radius: 4px;
+          font-size: 16px;
+          background-image: url('/static/searchicon.png');
+          background-color: white;
+          background-position: 10px 10px; 
+          background-repeat: no-repeat;
+          padding: 12px 20px 12px 40px;
+        }
+        input[type=submit] {
+            width: 10%;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            margin: 4px 2px;
+            font-size: 16px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+        }
+        .container {
+			  display: table;
+			  position: absolute;
+			  top: 0;
+			  left: 0;
+			  height: 100%;
+			  width: 100%;
+			}
+
+			.middle {
+			  display: table-cell;
+			  vertical-align: middle;
+			}
+
+			.inner {
+			  margin-left: auto;
+			  margin-right: auto;
+			  text-align: center;
+			}
+    </style>
+</head>
+<body>
+<br><br><br><br><br>
+<h1 style="font-family: 'Acme'; text-align: center; font-size: 44px; color: white; ">Twitter Account Analysis</h1>
+<p style="text-align: center; color: white; font-family: 'Actor'; font-size: 17px;">This application gives the analysis of the last 500 tweets of a user.
+<br>
+The account should be public or else user not found error will be generated.
+</p>
+<div class="container">
+	<div class="middle">
+		<div class="inner">
+		    <form action="/search">
+		        <input type="text" name="username" placeholder="@username">
+		        <input type="submit" value="Search" style="font-family: 'Convergence'; font-size: 17px;">
+		    </form>
+    	</div>
+	</div>
+</div>
+
+</body>
+</html>
