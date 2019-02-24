@@ -41,6 +41,9 @@ Once, heroku is set up and all the files needed to deply the app on heroku are r
 ### Useful links
 
 [Tweepy](https://tweepy.readthedocs.io/en/v3.5.0/getting_started.html)
+
 [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
 [Heroku](https://devcenter.heroku.com/articles/getting-started-with-python)
+
 [Plotly for python](https://plot.ly/python/)
