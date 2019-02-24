@@ -1,5 +1,4 @@
 flask
 plotly
 tweepy
-jason
 pandas
