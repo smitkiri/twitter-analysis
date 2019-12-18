@@ -32,11 +32,12 @@ We need to convert the plotly graph to json and use the `Plotly` javascript to d
 To deploy the application on heroku, we need to create a free heroku account first.
 A useful tutorial to get started wih heroku can be found [here.](https://devcenter.heroku.com/articles/getting-started-with-python)
 
-Once, heroku is set up and all the files needed to deply the app on heroku are ready, use the following commands to deply the app.\
-`heroku create`\
-`git push heroku master`\
-`heroku ps:scale web=1`\
-`herou open`\
+Once, heroku is set up and all the files needed to deply the app on heroku are ready, use the following commands to deply the app.
+
+`> heroku create`\
+`> git push heroku master`\
+`> heroku ps:scale web=1`\
+`> herou open`
 
 ### Useful links
 
