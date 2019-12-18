@@ -5,22 +5,20 @@ Created on Wed Feb 20 18:46:09 2019
 @author: Smit
 """
 from flask import Flask, render_template,request,redirect
-import plotly
 
 import tweepy
 import pandas as pd
-import plotly.graph_objs as go
-import json
 import os
+import plots
 
 app = Flask(__name__)
 
 max_tweets = 500
 
-consumer_key = '...'
-consumer_secret = '...'
-access_token = '...'
-access_token_secret = '...'
+consumer_key = os.getenv('twitter_consumer_key')
+consumer_secret = os.getenv('twitter_consumer_secret')
+access_token = os.getenv('twitter_access_token')
+access_token_secret = os.getenv('twitter_access_token_secret')
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -51,96 +49,6 @@ def stats(username):
     
     return tweets
 
-def timeline(tweets):
-    dates = tweets.groupby(by='date').count()['text']
-
-    data = [go.Bar(
-            x = dates.index,
-            y = dates
-            )]
-    
-    layout = go.Layout(title = 'User Timeline')
-    fig = go.Figure(data = data, layout = layout)
-    
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graphJSON
-
-def source(tweets):
-    source = tweets.groupby('source').count()['text'].sort_values(ascending = False)
-    
-    data = [go.Bar(
-        x = source.index,
-        y = source
-    )]
-    
-    layout = go.Layout(title = 'Tweet Sources')
-    fig = go.Figure(data = data, layout = layout)
-    
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graphJSON
-
-def active_week(tweets):
-    active = tweets.groupby('day').count()['text']
-    active = active.reindex(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'])
-    
-    data = [go.Bar(
-        x = active.index,
-        y = active
-    )]
-    
-    layout = go.Layout(title = 'Day of week')
-    fig = go.Figure(data = data, layout = layout)
-    
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graphJSON
-
-def active_hr(tweets):
-    time = [x for x in range(24)]
-    day = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    z = [[tweets[(tweets['day'] == x) & (tweets['time'].apply(lambda x: x.hour) == y)].count()['text'] for y in time] for x in day]
-    
-    hovertext = list()
-    for yi, yy in enumerate(day):
-        hovertext.append(list())
-        for xi, xx in enumerate(time):
-            hovertext[-1].append('Hour: {}<br />Day: {}<br />Tweets: {}'.format(xx, yy, z[yi][xi]))
-    
-    data = [go.Heatmap(z = z, x = time, y = day, colorscale='Reds', hoverinfo='text', text=hovertext)]
-    layout = go.Layout(title = 'Daily rhythm', xaxis = dict(title='Hour', tick0 = 0, dtick=1, ticklen=24, tickwidth=1), yaxis=dict(title='Day'))
-    
-    fig = go.Figure(data=data, layout=layout)
-    
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graphJSON
-
-def tweet_type(tweets):
-    typ = tweets.groupby('type').count()['text'].sort_values()
-    
-    data = [go.Bar(
-            x = typ,
-            y = typ.index,
-            orientation = 'h')]
-    
-    layout = go.Layout(title = 'Types of tweets')
-    fig = go.Figure(data=data, layout=layout)
-    
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graphJSON
-
-def language(tweets):
-    lang = tweets.groupby('language').count()['text'].sort_values()
-    
-    data = [go.Bar(
-            x = lang,
-            y = lang.index,
-            orientation = 'h')]
-    
-    layout = go.Layout(title = 'Language of tweets')
-    fig = go.Figure(data=data, layout=layout)
-    
-    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return graphJSON
-
 
 @app.route('/<username>')
 def userinfo(username):
@@ -149,17 +57,28 @@ def userinfo(username):
     if tweets.shape[0] == 0:
         return render_template('no_tweets.html')
     
-    src = source(tweets)
-    time = timeline(tweets)
-    act_wk = active_week(tweets)
-    act_hr = active_hr(tweets)
-    typ = tweet_type(tweets)
-    lang = language(tweets)
+    src = plots.source(tweets)
+    time = plots.timeline(tweets)
+    act_wk = plots.active_week(tweets)
+    act_hr = plots.active_hr(tweets)
+    typ = plots.tweet_type(tweets)
+    lang = plots.language(tweets)
+    
+    wc = plots.wordcloud(tweets)
+    twt_len = plots.tweet_length(tweets)
     
     num = tweets.shape[0]
     
-    return render_template('userinfo.html',n_tweets = num, source=src, timeline=time, active_week=act_wk, active_hr = act_hr, name=username, tweet_type=typ, language=lang)
-
+    return render_template('userinfo.html',n_tweets = num, 
+                           source=src, 
+                           timeline=time, 
+                           active_week=act_wk, 
+                           active_hr = act_hr, 
+                           name=username, 
+                           tweet_type=typ, 
+                           language=lang,
+                           wordcloud = wc,
+                           tweet_length = twt_len)
 
 
 @app.route('/')
@@ -182,3 +101,4 @@ def search():
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+    

@@ -1,4 +1,6 @@
 flask
 plotly
 tweepy
+jason
 pandas
+wordcloud
