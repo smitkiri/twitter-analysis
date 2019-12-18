@@ -4,17 +4,17 @@ This web application analyzes a user's twitter account and displays various visu
 
 ### Installing all dependencies
 
-Installing tweepy, the twitter api for python.
+Installing tweepy, the twitter api for python.\
 `pip install tweepy`
 
-Installing plotly, a powerful visualization tool.
+Installing plotly, a powerful visualization tool.\
 `pip install plotly`
 
 Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and [Heroku](https://devcenter.heroku.com/articles/heroku-cli).
 
 You also need to create a [Twitter Developer account](https://developer.twitter.com/) and get consumer key and access token.
 
-### Getting data from twittepy
+### Getting data using tweepy
 
 The `tweepy.API.user_timeline()` function returns the last 20 tweets of a user. To get more tweets, we need to use the `tweepy.Cursor()` function.
 
@@ -32,11 +32,11 @@ We need to convert the plotly graph to json and use the `Plotly` javascript to d
 To deploy the application on heroku, we need to create a free heroku account first.
 A useful tutorial to get started wih heroku can be found [here.](https://devcenter.heroku.com/articles/getting-started-with-python)
 
-Once, heroku is set up and all the files needed to deply the app on heroku are ready, use the following commands to deply the app.
-`heroku create`
-`git push heroku master`
-`heroku ps:scale web=1`
-`herou open`
+Once, heroku is set up and all the files needed to deply the app on heroku are ready, use the following commands to deply the app.\
+`heroku create`\
+`git push heroku master`\
+`heroku ps:scale web=1`\
+`herou open`\
 
 ### Useful links
 
